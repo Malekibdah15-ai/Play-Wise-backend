@@ -1,26 +1,48 @@
-import { geminiModel } from "../config/gemini.js";
-
-export const filterMessage = async (req, res) => {
+const { askOpenAI } = require("../utils/askOpenAI.js");
+const filterMessage = async (req, res) => {
   const { message } = req.body;
+
+  if (!message) {
+    return res.status(400).json({ error: "Message is required" });
+  }
 
   try {
     const prompt = `
-Check the following message for inappropriate or offensive language.
+You are a content moderation system.
 
-Respond ONLY in JSON:
+Analyze the message below and respond with ONLY valid JSON.
+No extra text.
+
+Format:
 {
   "safe": true,
   "reason": ""
 }
 
-Message: "${message}"
+Message:
+"""${message}"""
 `;
 
-    const result = await geminiModel.generateContent(prompt);
-    const data = JSON.parse(result.response.text());
+    const raw = await askOpenAI(prompt);
+
+    const json = raw.substring(
+      raw.indexOf("{"),
+      raw.lastIndexOf("}") + 1
+    );
+
+    const data = JSON.parse(json);
+
+    if (typeof data.safe !== "boolean") {
+      throw new Error("Invalid AI response format");
+    }
 
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: "Gemini moderation failed" });
+    console.error("OpenAI moderation error:", error);
+    res.status(200).json({
+      safe: false,
+      reason: "Message could not be verified",
+    });
   }
 };
+module.exports = { filterMessage };
