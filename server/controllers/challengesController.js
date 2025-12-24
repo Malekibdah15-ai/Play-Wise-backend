@@ -1,21 +1,32 @@
-import { geminiModel } from "../config/gemini.js";
+const { askOpenAI } = require("../utils/askOpenAI.js");
 
-export const getDailyChallenges = async (req, res) => {
+const getDailyChallenges = async (req, res) => {
   try {
     const prompt = `
 Generate 3 daily gaming challenges.
 
-Return ONLY JSON:
+Return ONLY valid JSON.
+Do not include explanations or text.
+
+Format:
 [
   { "challenge": "Challenge text" }
 ]
 `;
 
-    const result = await geminiModel.generateContent(prompt);
-    const data = JSON.parse(result.response.text());
+    const raw = await askOpenAI(prompt);
+
+    const json = raw.substring(
+      raw.indexOf("["),
+      raw.lastIndexOf("]") + 1
+    );
+
+    const data = JSON.parse(json);
 
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: "Gemini challenges failed" });
+    console.error("OpenAI challenges error:", error);
+    res.status(500).json({ error: "AI challenges failed" });
   }
 };
+module.exports = { getDailyChallenges };
