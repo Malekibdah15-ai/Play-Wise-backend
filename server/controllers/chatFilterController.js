@@ -1,4 +1,4 @@
-const { askOpenAI } = require("../utils/askOpenAI.js");
+const { askGemini} = require("../utils/askGemini.js");
 const filterMessage = async (req, res) => {
   const { message } = req.body;
 
@@ -23,7 +23,7 @@ Message:
 """${message}"""
 `;
 
-    const raw = await askOpenAI(prompt);
+    const raw = await askGemini(prompt);
 
     const json = raw.substring(
       raw.indexOf("{"),

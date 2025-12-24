@@ -1,5 +1,4 @@
-
-const { askOpenAI } = require("../utils/askOpenAI.js");
+const { askGemini } = require("../utils/askGemini");
 
 const getRecommendations = async (req, res) => {
   const { userInput } = req.body;
@@ -10,40 +9,32 @@ const getRecommendations = async (req, res) => {
 
   try {
     const prompt = `
-You are a video game expert.
-Based on the user's preferences, recommend 3 games.
-
 Return ONLY valid JSON.
-NO markdown. NO explanations.
+No explanation. No markdown.
 
-Format:
 [
   {
     "name": "Game name",
-    "genre": ["Genre1", "Genre2"],
+    "genre": ["Genre"],
     "description": "Short description",
-    "rating": 1-5,
-    "guide": "Rules and tips"
+    "rating": 1-5
   }
 ]
 
 User preferences: ${userInput}
 `;
 
-    const text = await askOpenAI(prompt);
+    const text = await askGemini(prompt);
 
-    console.log("RAW AI RESPONSE:");
-    console.log(text);
+    const json = text.substring(
+      text.indexOf("["),
+      text.lastIndexOf("]") + 1
+    );
 
-    const data = JSON.parse(text);
-
-    res.json(data);
-  } catch (error) {
-    console.error("FULL AI ERROR:", error);
-    res.status(500).json({
-      error: "AI recommendation failed",
-      details: error.message
-    });
+    res.json(JSON.parse(json));
+  } catch (err) {
+    console.error("Gemini error:", err);
+    res.status(500).json({ error: "Gemini AI failed", details: err.message });
   }
 };
 
