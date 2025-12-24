@@ -1,4 +1,4 @@
-const { askOpenAI } = require("../utils/askOpenAI.js");
+const { askGemini } = require("../utils/askGemini.js");
 
 const getDailyChallenges = async (req, res) => {
   try {
@@ -14,7 +14,7 @@ Format:
 ]
 `;
 
-    const raw = await askOpenAI(prompt);
+    const raw = await askGemini(prompt);
 
     const json = raw.substring(
       raw.indexOf("["),

@@ -1,5 +1,5 @@
 const express = require("express");
-const { getRecommendations } = require("../controllers/aicontroller.js");
+const { getRecommendations } = require("../controllers/aicontroller");
 
 const router = express.Router();
 router.post("/recommend", getRecommendations);
