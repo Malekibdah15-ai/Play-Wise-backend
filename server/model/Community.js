@@ -6,10 +6,10 @@ const communityPostSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  game_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Game",
+  genre: {
+    type :String,
     required: true,
+    index: true
   },
   content: {
     type: String,
