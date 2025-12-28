@@ -11,13 +11,18 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter the email"],
     unique: true,
   },
+  communities: {
+      type: [String], // Aarray of strings (the genre slugs)
+      default: []
+  },
   password: {
     type: String,
-    required: [true, "Password must be at least 8 characters"],
+    required: [true, "Password is required"],
     minlength: [8, "Password must be at least 8 characters"]
   },
-}, { timestamps: true,
-      collection :"User"
-    });
+}, { 
+    timestamps: true,
+    collection: "User"
+});
 
 module.exports = mongoose.model("User", userSchema);

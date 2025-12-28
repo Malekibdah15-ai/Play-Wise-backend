@@ -69,7 +69,8 @@ module.exports.loginUser = async (req, res) => {
       user: {
         _id: user._id,
         userName: user.userName,
-        email: user.email
+        email: user.email,
+        communities: user.communities
       }
     });
   } catch (err) {

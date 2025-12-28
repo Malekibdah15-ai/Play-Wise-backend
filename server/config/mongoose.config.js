@@ -3,11 +3,6 @@ require('dotenv').config()
 const dbName = process.env.Db;
 const username = process.env.ATLAS_USERNAME;
 const pw = process.env.ATLAS_PASSWORD;
-console.log(dbName);
-console.log(username);
-console.log(dbName);
-
-
 
 // this is malek route for the db 
 // const uri = `mongodb+srv://${username}:${pw}@cluster0.oo5frow.mongodb.net/${dbName}?appName=Cluster0`;
