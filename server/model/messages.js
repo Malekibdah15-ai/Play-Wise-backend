@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const messageSchema = new mongoose.Schema({
   sender: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // This links to your User model
+    ref: 'User',
     required: true
   },
   content: {
@@ -11,10 +11,14 @@ const messageSchema = new mongoose.Schema({
     required: [true, "Message content cannot be empty"],
     trim: true
   },
+  time : {
+    type: Date,
+    default: Date.now
+  },
   genre: {
-    type: String, // We use the slug here (e.g., 'fps', 'rpg')
+    type: String, 
     required: true,
-    index: true // Makes searching by genre much faster
+    index: true
   }
 }, { 
   timestamps: true 
