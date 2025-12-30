@@ -97,4 +97,39 @@ const getNews = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch news", details: err.message });
   }
 };
-module.exports = { getRecommendations, getNews };
+
+
+const getRawgTrendyGames = async (req, res) => {
+    const API_KEY = process.env.RAWG_API_KEY;
+    
+    // Calculate dates: From 1 year ago until today
+    const today = new Date().toISOString().split('T')[0]; // e.g., 2025-12-30
+    const lastYear = new Date();
+    lastYear.setFullYear(lastYear.getFullYear() - 1);
+    const startDate = lastYear.toISOString().split('T')[0]; // e.g., 2024-12-30
+
+    // NEW URL: Added the &dates= parameter
+    // This forces RAWG to only look at recent hits
+    const url = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-added&page_size=20&dates=${startDate},${today}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const games = data.results.map(game => ({
+            id: game.id,
+            name: game.name,
+            image: game.background_image,
+            rating: game.rating,
+            released: game.released,
+            stores: game.stores?.map(s => ({
+                name: s.store.name,
+                domain: s.store.domain
+        })) || []
+        }));
+        res.json({ trendyGames: games });
+    } catch (error) {
+        res.status(500).json({ error: "API Error" });
+    }
+};
+
+module.exports = { getRecommendations, getNews ,getRawgTrendyGames};
