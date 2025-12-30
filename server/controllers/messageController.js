@@ -5,8 +5,8 @@ const messages = require("../model/messages");
 module.exports.findMessagesByGenre = async (req, res) => {
     try {
         const genreMessages = await messages.find({ genre: req.params.genreSlug })
-            .populate('sender', 'userName') // This swaps the ID for the actual User object
-            .sort({ createdAt: 1 });        // Sort so oldest is at top, newest at bottom
+            .populate('sender', 'userName') 
+            .sort({ createdAt: 1 });        
 
         res.status(200).json(genreMessages);
     } catch (err) {
