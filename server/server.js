@@ -10,9 +10,9 @@ const server = http.createServer(app); // 3. Wrap app in server
 
 // Routes imports
 const aiRoutes = require('./routes/airoutes');
-const dealsRoutes = require('./routes/dealroutes');
-const challengesRoutes = require('./routes/challengeroutes');
-const chatFilterRoutes = require('./routes/chatroutes');
+// const dealsRoutes = require('./routes/dealroutes');
+// const challengesRoutes = require('./routes/challengeroutes');
+// const chatFilterRoutes = require('./routes/chatroutes');
 const usersRoutes = require('./routes/userRoute.js');
 const GenerRoutes = require('./routes/Gener.js');
 const MesRoutes = require('./routes/message.js')
@@ -27,9 +27,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/messages',MesRoutes)
 app.use('/api/Gener', GenerRoutes);
 app.use('/api/ai', aiRoutes);
-app.use('/api/deals', dealsRoutes);
-app.use('/api/challenges', challengesRoutes);
-app.use('/api/chat-filter', chatFilterRoutes);
+// app.use('/api/deals', dealsRoutes);
+// app.use('/api/challenges', challengesRoutes);
+// app.use('/api/chat-filter', chatFilterRoutes);
 app.use('/api/users', usersRoutes);
 
 

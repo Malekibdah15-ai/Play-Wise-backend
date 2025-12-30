@@ -1,7 +1,6 @@
 const messages = require("../model/messages");
 
 
-
 module.exports.findMessagesByGenre = async (req, res) => {
     try {
         const genreMessages = await messages.find({ genre: req.params.genreSlug })
@@ -22,3 +21,4 @@ module.exports.getAll = async (req, res) => {
         res.status(400).json(err);
     }
 };
+

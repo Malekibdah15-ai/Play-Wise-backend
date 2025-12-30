@@ -5,7 +5,7 @@ const { getRecommendations } = require("../controllers/aicontroller");
 const { getDailyChallenges } = require("../controllers/challengesController");
 const { filterMessage } = require("../controllers/chatFilterController");
 const { getBestDeal } = require("../controllers/dealsController");
-
+const { matchmaker } = require("../controllers/matchmakerController");
 
 router.post("/recommend", getRecommendations);
 
@@ -17,6 +17,8 @@ router.post("/chat-filter", filterMessage);
 
 
 router.post("/deal", getBestDeal);
+
+router.post("/matchmaker", matchmaker);
 
 module.exports = router;
 
