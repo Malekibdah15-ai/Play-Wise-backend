@@ -11,11 +11,10 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter the email"],
     unique: true,
   },
-  communities: {
+  communities: [{
       type: String,
-      ref: "Genre",
       default: []
-  },
+  }],
   password: {
     type: String,
     required: [true, "Password is required"],
