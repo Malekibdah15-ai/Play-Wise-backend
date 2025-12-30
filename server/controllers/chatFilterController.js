@@ -2,26 +2,26 @@ const { askGemini} = require("../utils/askGemini.js");
 const filterMessage = async (req, res) => {
   const { message } = req.body;
 
-  if (!message) {
+  if (!message){
     return res.status(400).json({ error: "Message is required" });
   }
 
   try {
     const prompt = `
-You are a content moderation system.
+  You are a content moderation system.
 
-Analyze the message below and respond with ONLY valid JSON.
-No extra text.
+  Analyze the message below and respond with ONLY valid JSON.
+  No extra text.
 
-Format:
-{
+  Format:
+  {
   "safe": true,
   "reason": ""
-}
+  }
 
-Message:
-"""${message}"""
-`;
+  Message:
+  """${message}"""
+  `;
 
     const raw = await askGemini(prompt);
 

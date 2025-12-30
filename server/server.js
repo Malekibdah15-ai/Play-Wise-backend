@@ -39,5 +39,5 @@ const io = new Server(server, { cors: { origin: "*" } });
 require('./sockets/chat.js')(io); 
 
 server.listen(8000, () => {
-    console.log(" Server running on Port 8000 (API + Sockets)")
+    console.log(" Server running on Port 8000 (API  + Sockets)")
 })

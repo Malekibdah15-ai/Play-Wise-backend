@@ -1,5 +1,7 @@
 const { askGemini } = require("../utils/askGemini");
-
+const NewsAPI = require('newsapi');
+const newsapi = new NewsAPI('3f2a2d6f8113450f80d5850819bd14f6');
+// 3f2a2d6f8113450f80d5850819bd14f6q
 const getRecommendations = async (req, res) => {
   const { userInput } = req.body;
 
@@ -56,4 +58,43 @@ const getRecommendations = async (req, res) => {
   }
 };
 
-module.exports = { getRecommendations };
+
+
+const getNews = async (req, res) => {
+  const { communities } = req.body;
+
+  if (!communities || !Array.isArray(communities)) {
+    return res.status(400).json({ error: "communities array is required" });
+  }
+
+  try {
+    // 1. Group communities and add "gaming" to ensure context
+    // Result: "(GTA OR Valorant) AND gaming"
+    const query = `(${communities.join(' OR ')}) AND gaming`;
+
+    const response = await newsapi.v2.everything({
+      q: query,
+      searchIn: 'title,description', // Focuses search on the main text
+      language: 'en',
+      sortBy: 'relevancy', // Changed from 'publishedAt' to 'relevancy' to avoid random spam
+      pageSize: 10,
+      // Optional: restrict to gaming-specific domains
+      domains: 'ign.com,gamespot.com,kotaku.com,pcgamer.com,polygon.com' 
+    });
+
+    const formattedNews = response.articles.map((article) => ({
+      title: article.title,
+      category: article.source.name || "Game News",
+      image: article.urlToImage || "https://via.placeholder.com/600x400?text=Gaming+News",
+      Link: article.url,
+      data: new Date(article.publishedAt).toLocaleDateString()
+    }));
+
+    res.json({ newsItems: formattedNews });
+
+  } catch (err) {
+    console.error("NewsAPI error:", err);
+    res.status(500).json({ error: "Failed to fetch news", details: err.message });
+  }
+};
+module.exports = { getRecommendations, getNews };

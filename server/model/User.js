@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   communities: {
-      type: [String], // Aarray of strings (the genre slugs)
+      type: String,
+      ref: "Genre",
       default: []
   },
   password: {

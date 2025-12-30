@@ -10,7 +10,8 @@ module.exports = (io) => {
       try {
         socket.join(genreName);
           const updatedUser = await User.findOneAndUpdate(
-            { _id: userId, communities: { $ne: genreName } }, // Only if genre NOT in array
+            { _id: userId,
+              communities: { $ne: genreName } }, 
             { $addToSet: { communities: genreName } },
             { new: true }
           );
@@ -23,14 +24,13 @@ module.exports = (io) => {
             console.log(`Member count increased for ${genreName}`);
             
 
-            // io.emit("update-member-count", { genreName, newCount: GenerNEw.memberCount });
+            io.emit("update-member-count", { genreName, newCount: GenerNEw.memberCount });
           }
         
       } catch (err) {
         console.error("Error updating member count:", err);
       }
     });
-
 
     socket.on("sync-my-communities", (communitySlugs) => {
       if (Array.isArray(communitySlugs)) {

@@ -1,9 +1,20 @@
 const mongoose = require('mongoose');
 
 const genreSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true }, 
-  slug: { type: String, required: true, unique: true }, 
-  memberCount: { type: Number, default: 0 },
+  name: { 
+    type: String,
+     required: true,
+      unique: true
+     }, 
+  slug:{ 
+    type: String,
+     required: true,
+      unique: true
+    }, 
+  memberCount: {
+     type: Number,
+      default: 0
+     },
   description: String,
   icon: String, 
 });
